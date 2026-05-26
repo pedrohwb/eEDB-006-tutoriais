@@ -346,6 +346,10 @@ aws sts get-caller-identity
 }
 ```
 
+> 📸 **Print sugerido — `images/01-aws-sts-get-caller-identity.png`:** Terminal mostrando o JSON com `UserId`, `Account` e `Arn`.
+>
+> ![Resultado do aws sts get-caller-identity](images/01-aws-sts-get-caller-identity.png)
+
 Se retornar erro, configure as credenciais:
 ```bash
 ../install_aws_pre_req/setup_aws_credentials.sh
@@ -380,6 +384,10 @@ Initializing provider plugins...
 Terraform has been successfully initialized!
 ```
 
+> 📸 **Print sugerido — `images/02-terraform-init.png`:** Terminal com a mensagem `Terraform has been successfully initialized!`.
+>
+> ![Resultado do terraform init](images/02-terraform-init.png)
+
 ### Ver o que sera criado (plan)
 
 ```bash
@@ -398,6 +406,10 @@ Terraform will perform the following actions:
 
 Plan: 4 to add, 0 to change, 0 to destroy.
 ```
+
+> 📸 **Print sugerido — `images/03-terraform-plan.png`:** Terminal mostrando os 4 recursos que serao criados.
+>
+> ![Resultado do terraform plan](images/03-terraform-plan.png)
 
 ### Criar a infraestrutura
 
@@ -419,6 +431,10 @@ terraform apply -auto-approve
         - 3 arquivos CSV uploaded
 ```
 
+> 📸 **Print sugerido — `images/04-terraform-apply.png`:** Terminal mostrando o final do `terraform apply` com `Apply complete! Resources: 4 added`.
+>
+> ![Resultado do terraform apply](images/04-terraform-apply.png)
+
 ### Ver os outputs
 
 ```bash
@@ -434,6 +450,10 @@ s3_bucket_arn = "arn:aws:s3:::XXXXXXXXXXXX-athena-lab"
 s3_data_path = "s3://XXXXXXXXXXXX-athena-lab/data/"
 s3_results_path = "s3://XXXXXXXXXXXX-athena-lab/results/resultado_vendas/"
 ```
+
+> 📸 **Print sugerido — `images/05-terraform-output.png`:** Terminal mostrando os outputs (`s3_bucket`, `s3_data_path`, `s3_results_path`).
+>
+> ![Resultado do terraform output](images/05-terraform-output.png)
 
 Salve o nome do bucket:
 ```bash
@@ -460,6 +480,10 @@ aws s3 ls s3://${BUCKET}/data/
                            PRE vendas/
 ```
 
+> 📸 **Print sugerido — `images/06-s3-ls-data.png`:** Terminal mostrando as 3 pastas em `data/` (`clientes/`, `produtos/`, `vendas/`).
+>
+> ![Resultado do aws s3 ls data](images/06-s3-ls-data.png)
+
 ### Verificar conteudo de cada pasta
 
 ```bash
@@ -477,6 +501,14 @@ aws s3 ls s3://${BUCKET}/data/vendas/
 ```
 
 Agora o S3 esta configurado corretamente com os 3 CSVs. O proximo passo e criar o schema no Glue.
+
+> 📸 **Print sugerido — `images/07-s3-console-bucket.png`:** Console AWS S3 mostrando o bucket criado com as pastas principais.
+>
+> ![Console S3 com bucket criado](images/07-s3-console-bucket.png)
+
+> 📸 **Print sugerido — `images/08-s3-console-data-folder.png`:** Console AWS S3 mostrando o conteudo da pasta `data/`.
+>
+> ![Console S3 com pasta data](images/08-s3-console-data-folder.png)
 
 ---
 
@@ -515,10 +547,18 @@ aws glue create-database \
 
 **Resultado esperado:** Nenhum erro (silent success).
 
+> 📸 **Print sugerido — `images/09-glue-create-database.png`:** Terminal sem erros apos executar o comando de criacao do database.
+>
+> ![Criacao do database no Glue](images/09-glue-create-database.png)
+
 **Verificar:**
 ```bash
 aws glue get-database --name athena_lab --region us-east-1
 ```
+
+> 📸 **Print sugerido — `images/10-glue-get-database.png`:** Terminal com o JSON retornado por `aws glue get-database`.
+>
+> ![Resultado do get-database](images/10-glue-get-database.png)
 
 ### Passo 4.2 — Criar tabela de Clientes
 
@@ -573,6 +613,10 @@ aws glue create-table \
 aws glue get-table --database-name athena_lab --name clientes --region us-east-1
 ```
 
+> 📸 **Print sugerido — `images/11-glue-tabela-clientes.png`:** Terminal com o JSON da tabela `clientes`.
+>
+> ![Resultado do get-table clientes](images/11-glue-tabela-clientes.png)
+
 ### Passo 4.3 — Criar tabela de Produtos
 
 ```bash
@@ -609,6 +653,10 @@ aws glue create-table \
 ```bash
 aws glue get-table --database-name athena_lab --name produtos --region us-east-1
 ```
+
+> 📸 **Print sugerido — `images/12-glue-tabela-produtos.png`:** Terminal com o JSON da tabela `produtos`.
+>
+> ![Resultado do get-table produtos](images/12-glue-tabela-produtos.png)
 
 ### Passo 4.4 — Criar tabela de Vendas
 
@@ -648,6 +696,10 @@ aws glue create-table \
 aws glue get-table --database-name athena_lab --name vendas --region us-east-1
 ```
 
+> 📸 **Print sugerido — `images/13-glue-tabela-vendas.png`:** Terminal com o JSON da tabela `vendas`.
+>
+> ![Resultado do get-table vendas](images/13-glue-tabela-vendas.png)
+
 ### Passo 4.5 — Listar todas as tabelas
 
 ```bash
@@ -666,7 +718,19 @@ aws glue get-tables --database-name athena_lab --region us-east-1
 }
 ```
 
+> 📸 **Print sugerido — `images/14-glue-list-tables.png`:** Terminal listando as 3 tabelas (`clientes`, `produtos`, `vendas`).
+>
+> ![Resultado do get-tables](images/14-glue-list-tables.png)
+
 Agora o Glue Data Catalog tem o schema das 3 tabelas de entrada. O proximo passo e executar a query no Athena.
+
+> 📸 **Print sugerido — `images/15-glue-console-database.png`:** Console AWS Glue mostrando o database `athena_lab`.
+>
+> ![Console Glue com database](images/15-glue-console-database.png)
+
+> 📸 **Print sugerido — `images/16-glue-console-tables.png`:** Console AWS Glue mostrando as 3 tabelas criadas.
+>
+> ![Console Glue com tabelas](images/16-glue-console-tables.png)
 
 ---
 
@@ -688,6 +752,10 @@ aws athena list-table-metadata \
 ```
 
 **Resultado esperado:** Lista das 3 tabelas (clientes, produtos, vendas).
+
+> 📸 **Print sugerido — `images/17-athena-list-tables.png`:** Terminal com as 3 tabelas visiveis no Athena.
+>
+> ![Resultado do list-table-metadata](images/17-athena-list-tables.png)
 
 ### Passo 5.2 — Executar a query principal
 
@@ -728,6 +796,10 @@ aws athena start-query-execution \
 }
 ```
 
+> 📸 **Print sugerido — `images/18-athena-query-execution-id.png`:** Terminal com o `QueryExecutionId` retornado.
+>
+> ![Resultado do start-query-execution](images/18-athena-query-execution-id.png)
+
 O `QueryExecutionId` e o ID unico da execucao. Guarde para verificar o status.
 
 ### Passo 5.3 — Verificar status da query
@@ -763,6 +835,10 @@ aws athena get-query-execution \
 
 ```
 
+> 📸 **Print sugerido — `images/19-athena-status-running.png`:** Terminal mostrando `State: RUNNING` no status da query.
+>
+> ![Status RUNNING da query Athena](images/19-athena-status-running.png)
+
 Aguarde ate o `State` mudar para `SUCCEEDED`. Para queries pequenas como esta, geralmente leva **5-15 segundos**.
 
 **Verificar estado repetidamente ate SUCCEEDED:**
@@ -791,12 +867,24 @@ for i in {1..30}; do
 done
 ```
 
+> 📸 **Print sugerido — `images/20-athena-status-succeeded.png`:** Terminal mostrando `State: SUCCEEDED` apos a finalizacao da query.
+>
+> ![Status SUCCEEDED da query Athena](images/20-athena-status-succeeded.png)
+
 **Estados possiveis:**
 - `QUEUED`: Query na fila, aguardandoexecucao
 - `RUNNING`: Query em execucao
 - `SUCCEEDED`: Query concluida com sucesso
 - `FAILED`: Query falhou (verificar mensagem de erro)
 - `CANCELLED`: Query cancelada pelo usuario
+
+> 📸 **Print sugerido — `images/21-athena-console-query-editor.png`:** Console AWS Athena (Query Editor) com a query SQL preenchida.
+>
+> ![Athena Query Editor](images/21-athena-console-query-editor.png)
+
+> 📸 **Print sugerido — `images/22-athena-console-query-results.png`:** Console AWS Athena mostrando os resultados da query executada.
+>
+> ![Athena Query Results](images/22-athena-console-query-results.png)
 
 ---
 
@@ -816,6 +904,10 @@ aws s3 ls s3://${BUCKET}/results/resultado_vendas/
 2026-05-21 ...          0  _SUCCESS
 2026-05-21 ...        576  a1b2c3d4-e5f6-7890-abcd-ef1234567890.csv
 ```
+
+> 📸 **Print sugerido — `images/23-s3-resultado-arquivo.png`:** Terminal mostrando o arquivo CSV de resultado no caminho `results/resultado_vendas/`.
+>
+> ![Arquivo CSV de resultado no S3](images/23-s3-resultado-arquivo.png)
 
 O Athena criou um arquivo CSV com o resultado. O nome do arquivo e o ID da query.
 
@@ -840,6 +932,10 @@ MG     Livros        600.0          1
 ...
 ```
 
+> 📸 **Print sugerido — `images/24-resultado-csv-conteudo.png`:** Terminal mostrando o conteudo formatado do CSV de resultado.
+>
+> ![Conteudo do CSV de resultado](images/24-resultado-csv-conteudo.png)
+
 ### Ver resultado pelo Athena (via CLI)
 
 ```bash
@@ -861,6 +957,10 @@ aws athena get-query-results \
     }
 }
 ```
+
+> 📸 **Print sugerido — `images/25-s3-console-resultado.png`:** Console AWS S3 mostrando o arquivo CSV de resultado na pasta `results/resultado_vendas/`.
+>
+> ![Console S3 com arquivo de resultado](images/25-s3-console-resultado.png)
 
 ### Download local
 
@@ -930,6 +1030,10 @@ cd ~/Documents/Big\ Data/tutoriais/aws-athena-glue-tutorial/terraform
 terraform destroy -auto-approve
 ```
 
+> 📸 **Print sugerido — `images/26-terraform-destroy.png`:** Terminal mostrando `Destroy complete! Resources: 4 destroyed`.
+>
+> ![Resultado do terraform destroy](images/26-terraform-destroy.png)
+
 ### Via comandos AWS (se o Terraform falhar)
 
 ```bash
@@ -957,6 +1061,10 @@ aws s3 ls | grep athena-lab
 # Verificar databases Glue
 aws glue get-databases --region us-east-1
 ```
+
+> 📸 **Print sugerido — `images/27-glue-databases-empty.png`:** Terminal mostrando que nao ha mais databases no Glue apos o descomissionamento.
+>
+> ![Glue sem databases](images/27-glue-databases-empty.png)
 
 ---
 
